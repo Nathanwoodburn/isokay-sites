@@ -107,7 +107,8 @@ def site():
                         "fg_0": "#ffffff",
                         "btn_bg": "#2c54cf",
                         "btn_fg": "#ffffff",
-                        "socials": []
+                        "socials": [],
+                        "address": []
                     }
 
 
