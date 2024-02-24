@@ -71,7 +71,7 @@ def index():
         with open(f'sites/{host}.json') as file:
             data = json.load(file)
         
-        return render.site(data)
+        return render.site(data, True)
     return redirect(f'https://{DOMAINS[0]}')
 
 @app.route('/site')

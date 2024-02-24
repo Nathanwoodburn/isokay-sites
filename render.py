@@ -71,7 +71,7 @@ def tokenImage(token,foreground):
         return f'<img src="/token/{token}B" width="32px" height="32px" style="margin-top: 25px;" />'
     return f'<img src="/token/{token}W" width="32px" height="32px" style="margin-top: 25px;" />'
 
-def site(data):
+def site(data, injectSSL = False):
     title = data['title']
     link_0 = data['link_0']
     link_1 = data['link_1']
@@ -89,10 +89,14 @@ def site(data):
     socials = social_links(data['socials'])
     addresses = address_links(data['address'],data['fg_0'])
 
+    ssl = ''
+    if injectSSL:
+        ssl = '<script src="https://nathan.woodburn/https.js" async=""></script>'
+
     html = render_template('page.html', title=title, links=links, image=image,
                            bg_0=data['bg_0'], bg_1=data['bg_1'], fg_0=data['fg_0'],
                            btn_bg=data['btn_bg'], btn_fg=data['btn_fg'],
-                            socials=socials, addresses=addresses)
+                            socials=socials, addresses=addresses + ssl)
     html = html.replace('/assets/img/favicon.png',f'/avatar/{data["image"]}')
     return html
 
