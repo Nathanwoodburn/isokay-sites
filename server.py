@@ -1,5 +1,5 @@
 from flask import Flask
-from server import app
+from main import app
 import main
 from gunicorn.app.base import BaseApplication
 
