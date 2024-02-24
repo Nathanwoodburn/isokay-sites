@@ -216,6 +216,28 @@ def site_post():
     response.set_cookie('auth', '', expires=0)
     return response
 
+@app.route('/image/delete')
+def delete_image():
+    if 'auth' not in request.cookies:
+        return redirect('/')
+    auth = request.cookies['auth']
+
+    for i in cookies:
+        if i['cookie'] == auth:
+            # Get site content
+            if os.path.isfile(f'sites/{i["name"]}.json'):
+                with open(f'sites/{i["name"]}.json') as file:
+                    data = json.load(file)
+                    if 'image' in data:
+                        data['image'] = ''
+                        with open(f'sites/{i["name"]}.json', 'w') as file:
+                            json.dump(data, file)
+            return redirect('/site')
+                
+    response = make_response(redirect('/'))
+    response.set_cookie('auth', '', expires=0)
+    return response
+
 @app.route('/preview')
 def site_preview():
     if 'auth' not in request.cookies:
