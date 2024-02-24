@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" style="text-align: center;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{title}}</title>
+    <meta name="twitter:title" content="{{title}}">
+    <meta property="og:title" content="{{title}}">
+    <meta name="description" content="{{title}}">
+    <meta property="og:description" content="{{title}}">
+    <meta name="twitter:description" content="{{title}}">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body style="background: transparent;">
+    <div style="border-radius: 20px;"><img class="rounded" src="{{image}}" width="128px" height="128px" style="margin-top: 25px;">
+        <h1 style="margin-top: 10px;">{{title}}</h1> <div class="addresses">
+    {{addresses|safe}}
+    </div>
+<!-- <div style="height:25px;"></div> --> <div class="social-div">
+        <ul class="list-unstyled social-list">
+            {{socials|safe}}
+        </ul>        
+    </div>
+<div style="height:25px;"></div><style>
+    .custom-button:hover {
+  background-color: {{btn_fg}} !important;
+  color: {{btn_bg}} !important;
+}
+html {
+    background: linear-gradient({{bg_0}} 0%, {{bg_1}} 100%); color:{{fg_0}};"  
+    }
+    body {
+        min-height: 100vh;
+    }
+</style>
+
+<div>
+{{links|safe}}
+</div>
+    </div>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://auth.varo.domains/v1"></script>
+    <script src="/assets/js/script.min.js"></script>
+</body>
+
+</html>

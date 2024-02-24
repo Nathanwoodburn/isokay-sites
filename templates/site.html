@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - HNS Links</title>
+    <meta name="description" content="Create a links page for your domain">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="icon" type="image/png" sizes="600x627" href="/assets/img/favicon.png">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><img src="/assets/img/favicon.png" width="45px"><span>&nbsp;HNS Links</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto"></ul><a class="btn btn-primary shadow" role="button" href="/preview" style="margin-right: 10px;">Preview</a><a class="btn btn-primary shadow" role="button" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <header class="bg-dark">
+        <div class="container pt-4 pt-xl-5">
+            <div class="row pt-5">
+                <div class="col-md-8 col-xl-6 text-center text-md-start mx-auto">
+                    <div class="text-center">
+                        <p class="fw-bold text-success mb-2">{{domain}}/</p>
+                        <h1 class="fw-bold">Manage your site</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div style="padding-top: 25px;padding-bottom: 25px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="post" enctype="multipart/form-data">
+                            <h1>Content</h1><label class="form-label" style="font-size: 24px;margin-right: 10px;">Image</label><input class="form-control" type="file" style="margin-bottom: 25px;width: auto;display: inline-block;" name="image"><button class="btn btn-primary" type="button" style="display: inline;padding-top: 8px;padding-right: 12px;padding-bottom: 8px;padding-left: 12px;margin-left: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-trash3-fill">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"></path>
+                                </svg></button><input class="form-control" type="text" style="margin-bottom: 25px;" name="title" value="{{title}}" placeholder="Title">
+                            <div style="margin-bottom: 25px;">
+                                <h4>Socials</h4><input class="form-control" type="text" style="display: inline-block;width: auto;" name="email" value="{{socials['email']}}" placeholder="Email"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="twitter" value="{{socials['twitter']}}" placeholder="Twitter"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="github" value="{{socials['github']}}" placeholder="Github"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="youtube" value="{{socials['youtube']}}" placeholder="YouTube">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <h4>Addresses</h4><input class="form-control" type="text" style="display: inline-block;width: auto;" name="hns" value="{{address['hns']}}" placeholder="HNS Address"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="eth" value="{{address['eth']}}" placeholder="ETH Address"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="btc" value="{{address['btc']}}" placeholder="BTC Address"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="sol" value="{{address['sol']}}" placeholder="SOL Address">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <h4>Link</h4><input class="form-control" type="text" style="display: inline-block;width: 45%;" name="link_0" value="{{link_0}}" placeholder="Link Name"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="link_0_url" value="{{link_0_url}}" placeholder="Url">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <h4>Link</h4><input class="form-control" type="text" style="display: inline-block;width: 45%;" name="link_1" value="{{link_1}}" placeholder="Link Name"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="link_1_url" value="{{link_1_url}}" placeholder="Url">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <h4>Link</h4><input class="form-control" type="text" style="display: inline-block;width: 45%;" name="link_2" value="{{link_2}}" placeholder="Link Name"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="link_2_url" value="{{link_2_url}}" placeholder="Url">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <h4>Link</h4><input class="form-control" type="text" style="display: inline-block;width: 45%;" name="link_3" value="{{link_3}}" placeholder="Link Name"><input class="form-control" type="text" style="display: inline-block;width: auto;" name="link_3_url" value="{{link_3_url}}" placeholder="Url">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <p>Main Colours</p>
+                                <div>
+                                    <p style="display: inline-block;">Background Top</p><input class="form-control form-control-color" type="color" style="display: inline-block;margin-left: 25px;height: 2em;" name="bg_0" value="{{bg_0}}">
+                                </div>
+                                <div>
+                                    <p style="display: inline-block;">Background Bottom</p><input class="form-control form-control-color" type="color" style="display: inline-block;margin-left: 25px;height: 2em;" value="{{bg_1}}" name="bg_1">
+                                </div>
+                                <div>
+                                    <p style="display: inline-block;">Text</p><input class="form-control form-control-color" type="color" style="display: inline-block;margin-left: 25px;height: 2em;" name="fg_0" value="{{fg_0}}">
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <p>Button Colours</p>
+                                <div>
+                                    <p style="display: inline-block;">Background</p><input class="form-control form-control-color" type="color" style="display: inline-block;margin-left: 25px;height: 2em;" name="btn_bg" value="{{btn_bg}}">
+                                </div>
+                                <div>
+                                    <p style="display: inline-block;">Text</p><input class="form-control form-control-color" type="color" style="display: inline-block;margin-left: 25px;height: 2em;" name="btn_fg" value="{{btn_fg}}">
+                                </div>
+                            </div><input class="btn btn-primary" type="submit" value="Save" style="margin-right: 20px;"><a class="btn btn-primary" role="button" href="/publish">Publish</a>
+                        </form>
+                    </div>
+                    <div class="col-md-6" style="text-align: center;">{{preview|safe}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div style="max-width: 1000px;margin: auto;">
+            <h2 class="text-center">DNS Records</h2>
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td>@</td>
+                            <td>{{ip}}</td>
+                        </tr>
+                        <tr>
+                            <td>TLSA</td>
+                            <td>_443._tcp</td>
+                            <td>{{tlsa}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-dark">
+        <div class="container py-4 py-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
+                    <h3 class="fs-6 fw-bold">Services</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="https://hnshosting.au" target="_blank">Wordpress Hosting</a></li>
+                        <li><a href="https://firewallet.au" target="_blank">FireWallet</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
+                    <h3 class="fs-6 fw-bold">About</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="https://hns.au" target="_blank">HNSAU</a></li>
+                        <li><a href="https://nathan.woodburn.au" target="_blank">Nathan.Woodburn/</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last">
+                    <div class="fw-bold d-flex align-items-center mb-2"><span>HNS Links</span></div>
+                    <p class="text-muted">Easy to manage links page on Handshake domains</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+                <p class="mb-0">Copyright © {{year}} Nathan.Woodburn/</p>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://auth.varo.domains/v1"></script>
+    <script src="/assets/js/script.min.js"></script>
+</body>
+
+</html>
