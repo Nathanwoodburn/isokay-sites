@@ -203,6 +203,10 @@ def site_post():
 
                     file.save(f'avatars/{i["name"]}.' + extension)
                     data['image'] = f'{i["name"]}.' + extension
+            else:
+                if 'image' not in data:
+                    data['image'] = ''
+                    
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
                 json.dump(data, file)
