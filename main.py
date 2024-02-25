@@ -190,13 +190,13 @@ def site_post():
             address.append({'token': 'sol', 'address': request.form['sol']})
 
             # Remove empty socials and addresses
-            socials = [i for i in socials if i['url'] != '']
+            socials = [social for socials in socials if social['url'] != '']
             # Make sure links all start with http or https
-            for i in socials:
+            for social in socials:
                 # Set link to lowercase
-                i['url'] = i['url'].lower()
-                if not i['url'].startswith('http') and i['name'] != 'email':
-                    i['url'] = 'https://' + i['url']
+                social['url'] = social['url'].lower()
+                if not social['url'].startswith('http') and social['name'] != 'email':
+                    social['url'] = 'https://' + social['url']
 
 
             data['socials'] = socials
