@@ -195,7 +195,7 @@ def site_post():
             for i in socials:
                 # Set link to lowercase
                 i['url'] = i['url'].lower()
-                if not i['url'].startswith('http'):
+                if not i['url'].startswith('http') and i['name'] != 'email':
                     i['url'] = 'https://' + i['url']
 
 
