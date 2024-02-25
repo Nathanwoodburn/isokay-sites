@@ -7,6 +7,7 @@ import json
 import render
 import secrets
 import nginx
+import threading
 
 app = Flask(__name__)
 dotenv.load_dotenv()
@@ -281,13 +282,16 @@ def publish():
                     if 'tlsa' in data:
                         # Site is already published
                         return redirect('/site')
+                    def generate_ssl_and_write_nginx():
+                        tlsa = nginx.generate_ssl(i['name'])
+                        data['tlsa'] = tlsa
+                        with open(f'sites/{i["name"]}.json', 'w') as file:
+                            json.dump(data, file)
+                        nginx.write_nginx_conf(i['name'])
 
-                    tlsa = nginx.generate_ssl(i['name'])
-                    data['tlsa'] = tlsa
-                    with open(f'sites/{i["name"]}.json', 'w') as file:
-                        json.dump(data, file)
-                    nginx.write_nginx_conf(i['name'])
+                    threading.Thread(target=generate_ssl_and_write_nginx).start()
                     return redirect('/site')
+
 
                     
     response = make_response(redirect('/'))
