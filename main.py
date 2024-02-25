@@ -355,6 +355,8 @@ def logout():
     resp = make_response(redirect('/'))
     resp.set_cookie('auth', '', expires=0)
 
+    if 'auth' not in request.cookies:
+        return resp
     cookies = [i for i in cookies if i['cookie'] != request.cookies['auth']]
     with open('cookies.json', 'w') as file:
         json.dump(cookies, file)
