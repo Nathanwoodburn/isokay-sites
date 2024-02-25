@@ -217,7 +217,7 @@ def site_post():
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
                 json.dump(data, file)
-            return redirect('/site')
+            return redirect('/publishing')
         
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
@@ -332,6 +332,10 @@ def wallets(path):
                 return response
     return render_template('404.html', year=datetime.datetime.now().year), 404
             
+
+@app.route('/publishing')
+def publishing():
+    return render_template('publishing.html')
 
 # region Auth
 @app.route('/auth', methods=['POST'])
