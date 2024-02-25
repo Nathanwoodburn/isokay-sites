@@ -191,6 +191,14 @@ def site_post():
 
             # Remove empty socials and addresses
             socials = [i for i in socials if i['url'] != '']
+            # Make sure links all start with http or https
+            for i in socials:
+                # Set link to lowercase
+                i['url'] = i['url'].lower()
+                if not i['url'].startswith('http'):
+                    i['url'] = 'https://' + i['url']
+
+
             data['socials'] = socials
             address = [i for i in address if i['address'] != '']
             data['address'] = address
