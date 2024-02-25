@@ -204,6 +204,7 @@ def site_post():
             address = [i for i in address if i['address'] != '']
             data['address'] = address
 
+            data['image'] = ''
             if 'image' in request.files:
                 if request.files['image'].filename != '' and request.files['image'].filename != None:
                 # Make sure the file is an image
@@ -211,9 +212,7 @@ def site_post():
                     extension = file.filename.split('.')[-1]
 
                     file.save(f'avatars/{i["name"]}.' + extension)
-                    data['image'] = f'{i["name"]}.' + extension
-            else:
-                data['image'] = ''
+                    data['image'] = f'{i["name"]}.' + extension               
                     
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
