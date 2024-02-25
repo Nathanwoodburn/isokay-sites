@@ -217,7 +217,7 @@ def site_post():
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
                 json.dump(data, file)
-            return redirect('/publishing')
+            return redirect('/site')
         
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
@@ -289,7 +289,7 @@ def publish():
                         nginx.write_nginx_conf(i['name'])
 
                     threading.Thread(target=generate_ssl_and_write_nginx).start()
-                    return redirect('/site')
+                    return redirect('/publishing')
 
 
                     
