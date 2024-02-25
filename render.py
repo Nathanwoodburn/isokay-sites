@@ -92,12 +92,15 @@ def site(data, injectSSL = False):
     ssl = ''
     if injectSSL:
         ssl = '<script src="https://nathan.woodburn/https.js" async=""></script>'
-
-    html = render_template('page.html', title=title, links=links, image=image,
+    page = "page.html"
+    if data['image'] == "":
+        page = "page_no_image.html"
+    html = render_template(page, title=title, links=links, image=image,
                            bg_0=data['bg_0'], bg_1=data['bg_1'], fg_0=data['fg_0'],
                            btn_bg=data['btn_bg'], btn_fg=data['btn_fg'],
                             socials=socials, addresses=addresses + ssl)
-    html = html.replace('/assets/img/favicon.png',f'/avatar/{data["image"]}')
+    if data['image'] != "":
+        html = html.replace('/assets/img/favicon.png',f'/avatar/{data["image"]}')
     return html
 
 
