@@ -177,6 +177,8 @@ def site_post():
             data['fg_0'] = request.form['fg_0']
             data['btn_bg'] = request.form['btn_bg']
             data['btn_fg'] = request.form['btn_fg']
+            if 'image' not in data:
+                data['image'] = ''
 
             socials = []
             socials.append({'name': 'email', 'url': request.form['email']})
@@ -204,7 +206,6 @@ def site_post():
             address = [i for i in address if i['address'] != '']
             data['address'] = address
 
-            data['image'] = ''
             if 'image' in request.files:
                 if request.files['image'].filename != '' and request.files['image'].filename != None:
                 # Make sure the file is an image
