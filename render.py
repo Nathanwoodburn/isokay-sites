@@ -63,7 +63,7 @@ def address_links(addresses,foreground):
     html = ''
     for address in addresses:
         token = address['token'].upper()
-        html += f'<a href=".well-known/wallets/{token}" target="_blank">{tokenImage(token,foreground)}</a>'
+        html += f'<a style="margin:5px;" href=".well-known/wallets/{token}" target="_blank">{tokenImage(token,foreground)}</a>'
     return html
 
 def tokenImage(token,foreground):

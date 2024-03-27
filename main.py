@@ -8,6 +8,7 @@ import render
 import secrets
 import nginx
 import threading
+import nostr as nostr_module
 
 app = Flask(__name__)
 dotenv.load_dotenv()
@@ -109,7 +110,8 @@ def site():
                         "btn_bg": "#2c54cf",
                         "btn_fg": "#ffffff",
                         "socials": [],
-                        "address": []
+                        "address": [],
+                        "nostrs": []
                     }
 
 
@@ -298,6 +300,104 @@ def publish():
     response.set_cookie('auth', '', expires=0)
     return response
 
+@app.route('/nostr')
+def nostr():
+    if 'auth' not in request.cookies:
+        return redirect('/')
+    auth = request.cookies['auth']
+
+    for i in cookies:
+        if i['cookie'] == auth:
+            # Load site content
+            if os.path.isfile(f'sites/{i["name"]}.json'):
+                with open(f'sites/{i["name"]}.json') as file:
+                    data = json.load(file)
+                    nostr = []
+                    if 'nostr' in data:
+                        nostr = data['nostr']
+                    
+                    return render_template('nostr.html',year=datetime.datetime.now().year, domain=i['name'],nostr=nostr)
+                    
+    response = make_response(redirect('/'))
+    response.set_cookie('auth', '', expires=0)
+    return response
+
+@app.route('/nostr', methods=['POST'])
+def nostr_post():
+    if 'auth' not in request.cookies:
+        return redirect('/')
+    auth = request.cookies['auth']
+
+    for i in cookies:
+        if i['cookie'] == auth:
+            # Get site content
+            if os.path.isfile(f'sites/{i["name"]}.json'):
+                with open(f'sites/{i["name"]}.json') as file:
+                    data = json.load(file)
+            else:
+                return redirect('/site')
+
+            nostr = []
+            if 'nostr' in data:
+                nostr = data['nostr']
+            
+            # Check for new nostr links
+            if 'new-name' in request.form and 'new-pub' in request.form:
+                name = request.form['new-name']
+                pub = request.form['new-pub']
+                id = len(nostr)
+                for link in nostr:
+                    if link['name'] == name:
+                        link['pub'] = pub
+                        data['nostr'] = nostr
+                        with open(f'sites/{i["name"]}.json', 'w') as file:
+                            json.dump(data, file)
+                        return redirect('/nostr')
+                    if link['id'] >= id:
+                        id = link['id'] + 1
+
+                nostr.append({'name': name, 'pub': pub, 'id': id})
+            
+
+            data['nostr'] = nostr
+            with open(f'sites/{i["name"]}.json', 'w') as file:
+                json.dump(data, file)
+            return redirect('/nostr')
+        
+    response = make_response(redirect('/'))
+    response.set_cookie('auth', '', expires=0)
+    return response
+
+@app.route('/nostr/delete/<int:id>')
+def nostr_delete(id):
+    if 'auth' not in request.cookies:
+        return redirect('/')
+    auth = request.cookies['auth']
+
+    for i in cookies:
+        if i['cookie'] == auth:
+            # Get site content
+            if os.path.isfile(f'sites/{i["name"]}.json'):
+                with open(f'sites/{i["name"]}.json') as file:
+                    data = json.load(file)
+            else:
+                return redirect('/site')
+
+            nostr = []
+            if 'nostr' in data:
+                nostr = data['nostr']
+            
+            nostr = [i for i in nostr if i['id'] != id]
+            data['nostr'] = nostr
+            with open(f'sites/{i["name"]}.json', 'w') as file:
+                json.dump(data, file)
+            return redirect('/nostr')
+        
+    response = make_response(redirect('/'))
+    response.set_cookie('auth', '', expires=0)
+    return response
+
+
 @app.route('/.well-known/wallets/<path:path>')
 def wallets(path):
     # Check if host is in domains
@@ -331,6 +431,43 @@ def wallets(path):
                 response = make_response(i['address'])
                 response.headers['Content-Type'] = 'text/plain'
                 return response
+    return render_template('404.html', year=datetime.datetime.now().year), 404
+
+@app.route('/.well-known/nostr.json')
+def nostr_account():
+    # Check if host is in domains
+    if request.host in DOMAINS:
+        # Check if user is logged in
+        if 'auth' not in request.cookies:
+            return redirect(f'https://{DOMAINS[0]}')
+        auth = request.cookies['auth']
+        for i in cookies:
+            if i['cookie'] == auth:
+                # Load site content
+                if os.path.isfile(f'sites/{i["name"]}.json'):
+                    with open(f'sites/{i["name"]}.json') as file:
+                        data = json.load(file)
+                    if 'nostr' in data:
+                        nostr = data['nostr']
+                        # Return as plain text
+                        response = make_response(nostr_module.json(nostr))
+                        response.headers['Content-Type'] = 'text/plain'
+                        response.headers.add('Access-Control-Allow-Origin', '*')
+                        return response
+
+    # Get wallet from domain
+    host = request.host.split(':')[0]
+
+    if os.path.isfile(f'sites/{host}.json'):
+        with open(f'sites/{host}.json') as file:
+            data = json.load(file)
+        if 'nostr' in data:
+            nostr = data['nostr']
+            # Return as plain text
+            response = make_response(nostr_module.json(nostr))
+            response.headers['Content-Type'] = 'text/plain'
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
     return render_template('404.html', year=datetime.datetime.now().year), 404
             
 

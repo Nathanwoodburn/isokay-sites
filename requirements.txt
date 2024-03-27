@@ -3,3 +3,4 @@ python-dotenv
 gunicorn
 requests
 apscheduler
+bech32
