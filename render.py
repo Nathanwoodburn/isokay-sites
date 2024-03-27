@@ -91,7 +91,7 @@ def site(data, injectSSL = False):
 
     ssl = ''
     if injectSSL:
-        ssl = '<script src="https://nathan.woodburn/https.js" async=""></script>'
+        ssl = f'<script src="https://{injectSSL}/https.js" async=""></script>'
     page = "page.html"
     if data['image'] == "":
         page = "page_no_image.html"
