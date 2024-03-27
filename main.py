@@ -51,6 +51,10 @@ if not os.path.isdir('certs'):
 def send_report(path):
     return send_from_directory('templates/assets', path)
 
+@app.route('/https.js')
+def httpsJS():
+    return send_from_directory('templates', 'https.js')
+
 @app.route('/favicon.png')
 def faviconPNG():
     return send_from_directory('templates/assets/img', 'favicon.png')
