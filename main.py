@@ -8,7 +8,6 @@ import render
 import secrets
 import nginx
 import threading
-import nostr as nostr_module
 
 app = Flask(__name__)
 dotenv.load_dotenv()
@@ -45,6 +44,9 @@ if not os.path.isdir('sites'):
 
 if not os.path.isdir('certs'):
     os.mkdir('certs')
+
+if not os.path.isdir('images'):
+    os.mkdir('images')
 
 #Assets routes
 @app.route('/assets/<path:path>')
@@ -92,11 +94,11 @@ def site():
             if os.path.isfile(f'sites/{i["name"]}.json'):
                 with open(f'sites/{i["name"]}.json') as file:
                     data = json.load(file)
-                    preview = render.preview(data)
+                    # preview = render.preview(data)
             else:
                 with open(f'sites/example.json') as file:
-                    data = json.load(file)
-                    preview = render.preview(data)
+                    # data = json.load(file)
+                    # preview = render.preview(data)
                     data = {
                         'title': '',
                         'link_0': '',
@@ -115,7 +117,22 @@ def site():
                         "btn_fg": "#ffffff",
                         "socials": [],
                         "address": [],
-                        "nostrs": []
+                        "nostrs": [],
+                        "bio": "",
+                        "gallery-link": False,
+                        "bg": "",
+                        "gallery_imgs": {},
+                        "gallery_desc":{
+                            "0": "",
+                            "1": "",
+                            "2": "",
+                            "3": "",
+                            "4": "",
+                            "5": "",
+                            "6": "",
+                            "7": "",
+                            "8": ""
+                        }
                     }
 
 
@@ -128,16 +145,15 @@ def site():
             link_1_url = data['link_1_url']
             link_2_url = data['link_2_url']
             link_3_url = data['link_3_url']
-            fg_0 = data['fg_0']
-            bg_0 = data['bg_0']
-            bg_1 = data['bg_1']
             btn_bg = data['btn_bg']
             btn_fg = data['btn_fg']
-            socials = data['socials']
             address = data['address']
+            bio = data['bio']
+            gallery_link = data['gallery-link']
+            gallery_imgs = data['gallery_imgs']
+            gallery_desc = data['gallery_desc']
 
-            # Convert socials to dict
-            socials = {i['name']: i['url'] for i in socials}
+            
             address = {i['token']: i['address'] for i in address}
             tlsa = data['tlsa'] if 'tlsa' in data else ''
             ip = IP
@@ -145,8 +161,8 @@ def site():
             return render_template('site.html', year=datetime.datetime.now().year, domain=i['name'],
             title=title, link_0=link_0, link_1=link_1, link_2=link_2, link_3=link_3,
             link_0_url=link_0_url, link_1_url=link_1_url, link_2_url=link_2_url,
-            link_3_url=link_3_url, fg_0=fg_0, bg_0=bg_0, bg_1=bg_1, btn_bg=btn_bg, btn_fg=btn_fg,
-            socials=socials,address=address,preview=preview,tlsa=tlsa,ip=ip)
+            link_3_url=link_3_url, btn_bg=btn_bg, btn_fg=btn_fg,address=address,
+            tlsa=tlsa,ip=ip,bio=bio,gallery_link=gallery_link,gallery_imgs=gallery_imgs,gallery_desc=gallery_desc)
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
     return response
@@ -178,19 +194,20 @@ def site_post():
             data['link_1_url'] = request.form['link_1_url']
             data['link_2_url'] = request.form['link_2_url']
             data['link_3_url'] = request.form['link_3_url']
-            data['bg_0'] = request.form['bg_0']
-            data['bg_1'] = request.form['bg_1']
-            data['fg_0'] = request.form['fg_0']
             data['btn_bg'] = request.form['btn_bg']
             data['btn_fg'] = request.form['btn_fg']
+            data['bio'] = request.form['bio']
+            data['gallery-link'] = 'gallery-link' in request.form
             if 'image' not in data:
                 data['image'] = ''
-
-            socials = []
-            socials.append({'name': 'email', 'url': request.form['email']})
-            socials.append({'name': 'twitter', 'url': request.form['twitter']})
-            socials.append({'name': 'github', 'url': request.form['github']})
-            socials.append({'name': 'youtube', 'url': request.form['youtube']})
+            if 'bg' not in data:
+                data['bg'] = ''
+            
+            if 'gallery_imgs' not in data:
+                data['gallery_imgs'] = {}
+            if 'gallery_desc' not in data:
+                data['gallery_desc'] = {}
+            
 
             address = []
             address.append({'token': 'hns', 'address': request.form['hns']})
@@ -198,29 +215,45 @@ def site_post():
             address.append({'token': 'btc', 'address': request.form['btc']})
             address.append({'token': 'sol', 'address': request.form['sol']})
 
-            # Remove empty socials and addresses
-            socials = [social for social in socials if social['url'] != '']
-            # Make sure links all start with http or https
-            for social in socials:
-                # Set link to lowercase
-                social['url'] = social['url'].lower()
-                if not social['url'].startswith('http') and social['name'] != 'email':
-                    social['url'] = 'https://' + social['url']
 
-
-            data['socials'] = socials
             address = [i for i in address if i['address'] != '']
             data['address'] = address
 
             if 'image' in request.files:
                 if request.files['image'].filename != '' and request.files['image'].filename != None:
-                # Make sure the file is an image
                     file = request.files['image']
                     extension = file.filename.split('.')[-1]
 
                     file.save(f'avatars/{i["name"]}.' + extension)
-                    data['image'] = f'{i["name"]}.' + extension               
-                    
+                    data['image'] = f'{i["name"]}.' + extension   
+
+            if 'bg' in request.files:
+                if request.files['bg'].filename != '' and request.files['bg'].filename != None:
+                    file = request.files['bg']
+                    extension = file.filename.split('.')[-1]
+
+                    file.save(f'images/{i["name"]}bg.' + extension)
+                    data['bg'] = f'{i["name"]}bg.' + extension            
+            
+
+            if 'gallery_0_img' in request.files:
+                if request.files['gallery_0_img'].filename != '' and request.files['gallery_0_img'].filename != None:
+                    file = request.files['gallery_0_img']
+                    extension = file.filename.split('.')[-1]
+
+                    file.save(f'images/{i["name"]}gallery0.' + extension)
+                    data['gallery_imgs']['0'] = f'{i["name"]}gallery0.' + extension
+
+            # Gallery descriptions
+            for j in range(9):
+                if f'gallery_{j}_img' in request.files:
+                    if request.files[f'gallery_{j}_img'].filename != '' and request.files[f'gallery_{j}_img'].filename != None:
+                        file = request.files[f'gallery_{j}_img']
+                        extension = file.filename.split('.')[-1]
+
+                        file.save(f'images/{i["name"]}gallery{j}.' + extension)
+                        data['gallery_imgs'][f'{j}'] = f'{i["name"]}gallery{j}.' + extension
+                data[f'gallery_desc'][f'{j}'] = request.form[f'gallery_{j}']
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
                 json.dump(data, file)
@@ -252,6 +285,28 @@ def delete_image():
     response.set_cookie('auth', '', expires=0)
     return response
 
+@app.route('/bg/delete')
+def delete_bg():
+    if 'auth' not in request.cookies:
+        return redirect('/')
+    auth = request.cookies['auth']
+
+    for i in cookies:
+        if i['cookie'] == auth:
+            # Get site content
+            if os.path.isfile(f'sites/{i["name"]}.json'):
+                with open(f'sites/{i["name"]}.json') as file:
+                    data = json.load(file)
+                    if 'bg' in data:
+                        data['bg'] = ''
+                        with open(f'sites/{i["name"]}.json', 'w') as file:
+                            json.dump(data, file)
+            return redirect('/site')
+                
+    response = make_response(redirect('/'))
+    response.set_cookie('auth', '', expires=0)
+    return response
+
 @app.route('/preview')
 def site_preview():
     if 'auth' not in request.cookies:
@@ -272,6 +327,38 @@ def site_preview():
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
     return response
+
+@app.route('/gallery')
+def gallery():
+    if 'auth' in request.cookies:
+        auth = request.cookies['auth']
+
+        for i in cookies:
+            if i['cookie'] == auth:
+                # Load site content
+                if os.path.isfile(f'sites/{i["name"]}.json'):
+                    with open(f'sites/{i["name"]}.json') as file:
+                        data = json.load(file)                    
+                else:
+                    with open(f'sites/example.json') as file:
+                        data = json.load(file)
+                return render.gallery(data)
+                    
+        response = make_response(redirect('/'))
+        response.set_cookie('auth', '', expires=0)
+        return response
+    
+    if request.host in DOMAINS:        
+        return redirect('/')
+    # Remove any ports
+    host = request.host.split(':')[0]
+    # Get content from site
+    if os.path.isfile(f'sites/{host}.json'):
+        with open(f'sites/{host}.json') as file:
+            data = json.load(file)
+        
+        return render.gallery(data, host)
+    return redirect(f'https://{DOMAINS[0]}')
 
 @app.route('/publish')
 def publish():
@@ -303,104 +390,6 @@ def publish():
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
     return response
-
-@app.route('/nostr')
-def nostr():
-    if 'auth' not in request.cookies:
-        return redirect('/')
-    auth = request.cookies['auth']
-
-    for i in cookies:
-        if i['cookie'] == auth:
-            # Load site content
-            if os.path.isfile(f'sites/{i["name"]}.json'):
-                with open(f'sites/{i["name"]}.json') as file:
-                    data = json.load(file)
-                    nostr = []
-                    if 'nostr' in data:
-                        nostr = data['nostr']
-                    
-                    return render_template('nostr.html',year=datetime.datetime.now().year, domain=i['name'],nostr=nostr)
-                    
-    response = make_response(redirect('/'))
-    response.set_cookie('auth', '', expires=0)
-    return response
-
-@app.route('/nostr', methods=['POST'])
-def nostr_post():
-    if 'auth' not in request.cookies:
-        return redirect('/')
-    auth = request.cookies['auth']
-
-    for i in cookies:
-        if i['cookie'] == auth:
-            # Get site content
-            if os.path.isfile(f'sites/{i["name"]}.json'):
-                with open(f'sites/{i["name"]}.json') as file:
-                    data = json.load(file)
-            else:
-                return redirect('/site')
-
-            nostr = []
-            if 'nostr' in data:
-                nostr = data['nostr']
-            
-            # Check for new nostr links
-            if 'new-name' in request.form and 'new-pub' in request.form:
-                name = request.form['new-name']
-                pub = request.form['new-pub']
-                id = len(nostr)
-                for link in nostr:
-                    if link['name'] == name:
-                        link['pub'] = pub
-                        data['nostr'] = nostr
-                        with open(f'sites/{i["name"]}.json', 'w') as file:
-                            json.dump(data, file)
-                        return redirect('/nostr')
-                    if link['id'] >= id:
-                        id = link['id'] + 1
-
-                nostr.append({'name': name, 'pub': pub, 'id': id})
-            
-
-            data['nostr'] = nostr
-            with open(f'sites/{i["name"]}.json', 'w') as file:
-                json.dump(data, file)
-            return redirect('/nostr')
-        
-    response = make_response(redirect('/'))
-    response.set_cookie('auth', '', expires=0)
-    return response
-
-@app.route('/nostr/delete/<int:id>')
-def nostr_delete(id):
-    if 'auth' not in request.cookies:
-        return redirect('/')
-    auth = request.cookies['auth']
-
-    for i in cookies:
-        if i['cookie'] == auth:
-            # Get site content
-            if os.path.isfile(f'sites/{i["name"]}.json'):
-                with open(f'sites/{i["name"]}.json') as file:
-                    data = json.load(file)
-            else:
-                return redirect('/site')
-
-            nostr = []
-            if 'nostr' in data:
-                nostr = data['nostr']
-            
-            nostr = [i for i in nostr if i['id'] != id]
-            data['nostr'] = nostr
-            with open(f'sites/{i["name"]}.json', 'w') as file:
-                json.dump(data, file)
-            return redirect('/nostr')
-        
-    response = make_response(redirect('/'))
-    response.set_cookie('auth', '', expires=0)
-    return response
-
 
 @app.route('/.well-known/wallets/<path:path>')
 def wallets(path):
@@ -436,44 +425,6 @@ def wallets(path):
                 response.headers['Content-Type'] = 'text/plain'
                 return response
     return render_template('404.html', year=datetime.datetime.now().year), 404
-
-@app.route('/.well-known/nostr.json')
-def nostr_account():
-    # Check if host is in domains
-    if request.host in DOMAINS:
-        # Check if user is logged in
-        if 'auth' not in request.cookies:
-            return redirect(f'https://{DOMAINS[0]}')
-        auth = request.cookies['auth']
-        for i in cookies:
-            if i['cookie'] == auth:
-                # Load site content
-                if os.path.isfile(f'sites/{i["name"]}.json'):
-                    with open(f'sites/{i["name"]}.json') as file:
-                        data = json.load(file)
-                    if 'nostr' in data:
-                        nostr = data['nostr']
-                        # Return as plain text
-                        response = make_response(nostr_module.json(nostr))
-                        response.headers['Content-Type'] = 'text/plain'
-                        response.headers.add('Access-Control-Allow-Origin', '*')
-                        return response
-
-    # Get wallet from domain
-    host = request.host.split(':')[0]
-
-    if os.path.isfile(f'sites/{host}.json'):
-        with open(f'sites/{host}.json') as file:
-            data = json.load(file)
-        if 'nostr' in data:
-            nostr = data['nostr']
-            # Return as plain text
-            response = make_response(nostr_module.json(nostr))
-            response.headers['Content-Type'] = 'text/plain'
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            return response
-    return render_template('404.html', year=datetime.datetime.now().year), 404
-            
 
 @app.route('/publishing')
 def publishing():
@@ -535,12 +486,23 @@ def login(request):
 def avatar(path):
     return send_from_directory('avatars', path)
 
+@app.route('/images/')
+def no_image():
+    return send_from_directory('templates/assets/img', 'noimage.webp')
+
+@app.route('/images/<path:path>')
+def images(path):
+    return send_from_directory('images', path)
+    
+
 @app.route('/token/<path:path>')
 def tokens(path):
+    # Convert to uppercase
+    path = path.upper()
     # Colour is last char
     colour = path[-1]
     token = path[:-1]
-    if colour.lower() == 'w':
+    if colour == 'W':
         return send_from_directory('templates/assets/img/tokens', f'{token}W.png')
     return send_from_directory('templates/assets/img/tokens', f'{token}.png')
 

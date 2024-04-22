@@ -27,12 +27,9 @@
 </head>
 
 <body style="background: url(&quot;/assets/img/default-bg.jpeg&quot;) center / cover no-repeat, transparent;">
-    <div style="border-radius: 20px;"><img class="rounded" src="{{image}}" width="228px" style="margin-top: 25px;" height="228px">
-        <div class="d-flex justify-content-center align-items-center" style="margin: auto;margin-top: 2em;">
-            <div style="background: rgba(0, 0, 0, 0.71);max-width: 700px;padding: 16px;border-radius: 8px;"><span class="fs-1">{{title}}</span></div>
-        </div>
-        <div class="d-flex justify-content-center align-items-center" style="margin: auto;margin-bottom: 2em;margin-top: 2em;">
-            <div style="background: rgba(0, 0, 0, 0.71);max-width: 700px;padding: 16px;border-radius: 8px;"><span>{{bio|safe}}</span></div>
+    <div style="border-radius: 20px;">
+        <div class="d-flex justify-content-center align-items-center" style="margin: auto;margin-top: 4em;">
+            <div style="background: rgba(0, 0, 0, 0.71);max-width: 700px;padding: 16px;border-radius: 8px;"><span class="fs-1">Gallery</span></div>
         </div><style>
     .custom-button:hover {
   background-color: {{btn_fg}} !important;
@@ -46,8 +43,8 @@ html {
     }
 </style>
 
-<div>
-{{links|safe}}
+<div style="margin-top:4em;">
+{{gallery|safe}}
 </div>
     </div>
     <script src="/assets/js/jquery.min.js"></script>
