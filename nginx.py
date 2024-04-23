@@ -4,8 +4,8 @@ def write_nginx_conf(domain):
 
     ssl = f'''
         listen 443 ssl;
-        ssl_certificate /root/hns-links/certs/{domain}/cert.crt;
-        ssl_certificate_key /root/hns-links/certs/{domain}/cert.key;
+        ssl_certificate /root/isokay-sites/certs/{domain}/cert.crt;
+        ssl_certificate_key /root/isokay-sites/certs/{domain}/cert.key;
         '''
     
 
