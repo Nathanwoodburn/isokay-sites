@@ -236,15 +236,7 @@ def site_post():
                     data['bg'] = f'{i["name"]}bg.' + extension            
             
 
-            if 'gallery_0_img' in request.files:
-                if request.files['gallery_0_img'].filename != '' and request.files['gallery_0_img'].filename != None:
-                    file = request.files['gallery_0_img']
-                    extension = file.filename.split('.')[-1]
-
-                    file.save(f'images/{i["name"]}gallery0.' + extension)
-                    data['gallery_imgs']['0'] = f'{i["name"]}gallery0.' + extension
-
-            # Gallery descriptions
+            # Gallery images
             for j in range(9):
                 if f'gallery_{j}_img' in request.files:
                     if request.files[f'gallery_{j}_img'].filename != '' and request.files[f'gallery_{j}_img'].filename != None:
@@ -252,8 +244,8 @@ def site_post():
                         extension = file.filename.split('.')[-1]
 
                         file.save(f'images/{i["name"]}gallery{j}.' + extension)
-                        data['gallery_imgs'][f'{j}'] = f'{i["name"]}gallery{j}.' + extension
-                data[f'gallery_desc'][f'{j}'] = request.form[f'gallery_{j}']
+                        data['gallery_imgs'][str(j)] = f'{i["name"]}gallery{j}.' + extension
+                data[f'gallery_desc'][str(j)] = request.form[f'gallery_{j}']
 
             with open(f'sites/{i["name"]}.json', 'w') as file:
                 json.dump(data, file)
