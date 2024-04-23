@@ -210,10 +210,10 @@ def site_post():
             
 
             address = []
-            address.append({'token': 'hns', 'address': request.form['hns']})
-            address.append({'token': 'eth', 'address': request.form['eth']})
-            address.append({'token': 'btc', 'address': request.form['btc']})
-            address.append({'token': 'sol', 'address': request.form['sol']})
+            # address.append({'token': 'hns', 'address': request.form['hns']})
+            # address.append({'token': 'eth', 'address': request.form['eth']})
+            # address.append({'token': 'btc', 'address': request.form['btc']})
+            # address.append({'token': 'sol', 'address': request.form['sol']})
 
 
             address = [i for i in address if i['address'] != '']
