@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 
 def varo_login():
     return '''
@@ -75,6 +75,13 @@ def tokenImage(token,foreground):
     return f'<img src="/token/{token}W" width="32px" height="32px" style="margin-top: 25px;" />'
 
 def site(data, injectSSL = False):
+    if 'redirect' in data:
+        redirect_url:str = data['redirect']
+        if redirect_url.strip() != "":
+            return redirect(redirect_url, code=307)
+
+
+
     title = data['title']
     link_0 = data['link_0']
     link_1 = data['link_1']

@@ -132,7 +132,8 @@ def site():
                             "6": "",
                             "7": "",
                             "8": ""
-                        }
+                        },
+                        "redirect": ""
                     }
 
 
@@ -152,6 +153,9 @@ def site():
             gallery_link = data['gallery-link']
             gallery_imgs = data['gallery_imgs']
             gallery_desc = data['gallery_desc']
+            if 'redirect' not in data:
+                data['redirect'] = ''
+            redirect_url = data['redirect']
 
             
             address = {i['token']: i['address'] for i in address}
@@ -162,7 +166,7 @@ def site():
             title=title, link_0=link_0, link_1=link_1, link_2=link_2, link_3=link_3,
             link_0_url=link_0_url, link_1_url=link_1_url, link_2_url=link_2_url,
             link_3_url=link_3_url, btn_bg=btn_bg, btn_fg=btn_fg,address=address,
-            tlsa=tlsa,ip=ip,bio=bio,gallery_link=gallery_link,gallery_imgs=gallery_imgs,gallery_desc=gallery_desc)
+            tlsa=tlsa,ip=ip,bio=bio,gallery_link=gallery_link,gallery_imgs=gallery_imgs,gallery_desc=gallery_desc,redirect_url=redirect_url)
     response = make_response(redirect('/'))
     response.set_cookie('auth', '', expires=0)
     return response
@@ -197,6 +201,7 @@ def site_post():
             data['btn_bg'] = request.form['btn_bg']
             data['btn_fg'] = request.form['btn_fg']
             data['bio'] = request.form['bio']
+            data['redirect'] = request.form['redirect']
             data['gallery-link'] = 'gallery-link' in request.form
             if 'image' not in data:
                 data['image'] = ''
