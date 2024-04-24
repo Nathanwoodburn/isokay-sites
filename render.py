@@ -112,6 +112,10 @@ def site(data, injectSSL = False):
         html = html.replace('/assets/img/favicon.png',f'/avatar/{data["image"]}')
     if data['bg'] != "":
         html = html.replace('/assets/img/default-bg.jpeg',f'/images/{data["bg"]}')
+
+    if bio.strip() == "":
+        html = html.replace('<div style="background: rgba(0, 0, 0, 0.71);max-width: 700px;padding: 16px;border-radius: 8px;"><span></span></div>', '')
+
     return html
 
 def gallery(data, injectSSL = False):
