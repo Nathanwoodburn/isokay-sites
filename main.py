@@ -503,6 +503,21 @@ def tokens(path):
         return send_from_directory('templates/assets/img/tokens', f'{token}W.png')
     return send_from_directory('templates/assets/img/tokens', f'{token}.png')
 
+# Check for other pages
+@app.route('/<path:path>')
+def other(path):
+    if request.host not in DOMAINS:
+        return render_template('404.html', year=datetime.datetime.now().year), 404
+    
+    if os.path.isfile(f'templates/{path}.html'):
+        if 'auth' in request.cookies:
+            auth = request.cookies['auth']
+            for i in cookies:
+                if i['cookie'] == auth:
+                    return render_template(f'{path}.html', varo="window.location = '/site';", year=datetime.datetime.now().year)
+        return render_template(f'{path}.html',varo=render.varo_login(), year=datetime.datetime.now().year)
+    return render_template('404.html', year=datetime.datetime.now().year), 404
+
 # 404 catch all
 @app.errorhandler(404)
 def not_found(e):
