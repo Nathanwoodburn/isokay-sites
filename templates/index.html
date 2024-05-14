@@ -56,12 +56,20 @@
     </nav>
     <header class="bg-dark" style="background: var(--bs-dark);">
         <h1 class="text-center" style="color: rgb(255,0,0);">{{error}}</h1>
-        <div class="container" style="max-width: 1000px;">
+        <div class="container d-none d-print-block d-sm-none d-md-none d-lg-block d-xl-block d-xxl-block" style="max-width: 1000px;">
             <div class="d-flex justify-content-between"><img class="no-click" src="/assets/img/ntheading.svg" height="232"><img width="232" src="/assets/img/brand.png" alt="Name Tagz"><img class="flip-horizontal no-click" height="232" src="/assets/img/ntheading.svg"></div>
             <div class="text-center">
                 <h1 class="display-4" style="line-height: 1.38em;font-family: 'Sprite Graffiti';">Freedom beyond movement</h1>
             </div>
             <div class="d-flex justify-content-between" style="margin-top: -40px;"><img class="flip-horizontal no-click" src="/assets/img/ntheader2.svg" style="max-width: 260px;"><img class="no-click" src="/assets/img/ntheader2.svg" style="max-width: 260px;"></div>
+        </div>
+        <div class="container d-print-none d-lg-none d-xl-none d-xxl-none" style="max-width: 1000px;padding-right: 0px;padding-left: 0px;">
+            <div class="text-center" style="height: 0px;"><img width="232" src="/assets/img/brand.png" alt="Name Tagz"></div>
+            <div class="d-flex justify-content-between"><img class="no-click" src="/assets/img/ntheading.svg" height="232" style="max-width: 40%;"><img class="flip-horizontal no-click" height="232" src="/assets/img/ntheading.svg" style="max-width: 40%;"></div>
+            <div class="text-center">
+                <h1 class="display-4" style="line-height: 1.38em;font-family: 'Sprite Graffiti';">Freedom beyond movement</h1>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-top: -40px;"><img class="flip-horizontal no-click" src="/assets/img/ntheader2.svg" style="max-width: min(260px,40%);"><img class="no-click" src="/assets/img/ntheader2.svg" style="max-width: min(260px,40%);"></div>
         </div>
     </header>
     <section class="text-center" style="margin-top: 3em;">
